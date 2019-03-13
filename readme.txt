@@ -6,7 +6,7 @@ cd  tensorflow的models/research
 protoc object_detection/protos/*.proto --python_out=.
 
 3，nohup python object_detection/model_main.py \
---pipeline_config_path=/home/tensortec/riki/workspace/pro/object_detection/ssd/face_tiny/data/ssd_mobilenet_v1_0.25_face.config \
+--pipeline_config_path=/home/tensortec/riki/workspace/pro/object_detection/ssd/face_tiny/data/ssd_mobilenet_v1_gray_0.25_face.config \
 --model_dir=/home/tensortec/riki/workspace/pro/object_detection/ssd/face_tiny/model \
 --num_train_steps=50000 \
 --sample_1_of_n_eval_examples=1 \
@@ -14,12 +14,17 @@ protoc object_detection/protos/*.proto --python_out=.
 
 4，export frozen graph
 python object_detection/export_tflite_ssd_graph.py \
---pipeline_config_path=/home/tensortec/riki/workspace/pro/object_detection/ssd/face_tiny/data/ssd_mobilenet_v1_0.25_face.config \
---trained_checkpoint_prefix=/home/tensortec/riki/workspace/pro/object_detection/ssd/face_tiny/model/model.ckpt-50000 \
+--pipeline_config_path=/home/tensortec/riki/workspace/pro/object_detection/ssd/face_tiny/data/ssd_mobilenet_v1_gray_0.25_face.config \
+--trained_checkpoint_prefix=/home/tensortec/riki/workspace/pro/object_detection/ssd/face_tiny/model/model.ckpt-0 \
 --output_directory=/home/tensortec/riki/workspace/pro/object_detection/ssd/face_tiny/exported_model \
 --add_postprocessing_op=true
 
 4.1 export predict graph
+python object_detection/export_inference_graph.py  \
+--input_type=image_tensor \
+--pipeline_config_path=/home/tensortec/riki/workspace/pro/object_detection/ssd/face_tiny/data/ssd_mobilenet_v1_gray_0.25_face.config \
+--trained_checkpoint_prefix=/home/tensortec/riki/workspace/pro/object_detection/ssd/face_tiny/model/model.ckpt-50000 \
+--output_directory=/home/tensortec/riki/workspace/pro/object_detection/ssd/face_tiny/predict_model
 
 
 5，转换成frozen
